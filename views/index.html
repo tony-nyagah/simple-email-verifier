@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Email Verifier</title>
+        <link rel="stylesheet" type="text/css" href="/styles/index.css" />
+    </head>
+    <body>
+        <header class="container">
+            <nav class="tiny-nav">
+                <a href="/" class="brand">Simple Email Verifier .cool</a>
+            </nav>
+        </header>
+        <main class="container">
+            <div class="content">
+                <div class="title">
+                    <h1>Simple Email Verifier</h1>
+                    <p class="subtitle">
+                        <em
+                            >A simple tool to check whether an email address
+                            exists.</em
+                        >
+                    </p>
+                </div>
+                <div class="main">
+                    <div class="flex-default">
+                        <div class="option">
+                            <form
+                                class="tiny-form"
+                                id="mainForm"
+                                action="/check"
+                                method="post"
+                            >
+                                <label for="ltrInput" class="text-lighter"
+                                    >Email Address</label
+                                >
+                                <div class="input-wrapper">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        id="ltrInput"
+                                        placeholder="name@example.com"
+                                        autocorrect="off"
+                                        spellcheck="false"
+                                        autocomplete="off"
+                                        required=""
+                                    />
+
+                                    <a
+                                        href="javascript:clearInput()"
+                                        class="hide"
+                                        id="clearIconBtn"
+                                        ><span id="clear-icon">✘</span></a
+                                    >
+                                </div>
+                                <div class="button-wrapper">
+                                    <input
+                                        type="hidden"
+                                        name="_csrf"
+                                        value="WnV41OXkrk9hN0Y_EglMFKMvsrwNagv30xA_kEyYfb8"
+                                    />
+                                    <input
+                                        type="hidden"
+                                        id="v"
+                                        name="v"
+                                        value="v37"
+                                    />
+
+                                    <button
+                                        type="submit"
+                                        class="tiny-button button-primary"
+                                    >
+                                        Check
+                                    </button>
+                                    <!-- <button type="button" class="tiny-button" id="advButton">Options</button> -->
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="option" id="result-box">
+                            <div class="summary">
+                                <h2>
+                                    <strong
+                                        >Result :
+                                        <span class="red">BAD</span></strong
+                                    >
+                                </h2>
+                            </div>
+                            <div class="info">
+                                <p><em>The mailbox doesn't exist.</em></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>
