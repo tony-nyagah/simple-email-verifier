@@ -9,14 +9,14 @@ import (
 	emailverifier "github.com/AfterShip/email-verifier"
 )
 
-type EmailParts struct {
+type EmailPartss struct {
 	Username string
 	Domain   string
 }
 
 var verifier = emailverifier.NewVerifier().EnableSMTPCheck()
 
-func splitEmail(email string) (EmailParts, error) {
+func splitEmails(email string) (EmailParts, error) {
 	parts := strings.Split(email, "@")
 	if len(parts) != 2 {
 		return EmailParts{}, fmt.Errorf("Invalid email format!")
