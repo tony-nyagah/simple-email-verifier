@@ -1,10 +1,11 @@
-module github.com/tony-nyagah/simple-email-verifier
+module emailVerifier
 
-go 1.22.6
+go 1.23.2
+
+require github.com/AfterShip/email-verifier v1.4.1
 
 require (
-	github.com/AfterShip/email-verifier v1.4.0 // indirect
 	github.com/hbollon/go-edlib v1.6.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
-	golang.org/x/text v0.17.0 // indirect
+	golang.org/x/net v0.29.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 )

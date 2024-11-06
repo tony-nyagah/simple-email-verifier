@@ -1,0 +1,15 @@
+{{ if .IsValid }}
+<div class="bg-white border rounded-lg p-4 shadow-sm">
+    <h2 class="text-xl font-semibold mb-2">
+        Result: <span class="text-green-500">OK</span>
+    </h2>
+    <p class="text-gray-700 italic">The email address is valid.</p>
+</div>
+{{ else }}
+<div class="bg-white border rounded-lg p-4 shadow-sm">
+    <h2 class="text-xl font-semibold mb-2">
+        Result: <span class="text-red-500">Invalid</span>
+    </h2>
+    <p class="text-gray-700 italic">{{ .Message }}</p>
+</div>
+{{ end }}
