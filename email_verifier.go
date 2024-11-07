@@ -1,56 +1,64 @@
 package main
 
 import (
+	"errors"
+	"fmt"
+	"strings"
+
 	emailverifier "github.com/AfterShip/email-verifier"
 )
 
+// VerificationResult represents the result of an email verification.
 type VerificationResult struct {
-	IsValid      bool   `json:"isValid"`
-	Message      string `json:"message"`
-	MXAvailable  bool   `json:"mxAvailable"`
-	Disposable   bool   `json:"disposable"`
-	Reachable    string `json:"reachable"`
-	FullResponse string `json:"fullResponse"`
+	IsValid       bool
+	IsDeliverable bool
+	IsDisabled    bool
+	FullInbox     bool
+	HostExists    bool
+	Message       string
 }
 
-var verifier = emailverifier.NewVerifier().
-	EnableSMTPCheck().
-	EnableDomainSuggest().
-	EnableCatchAllCheck()
+// EmailVerifier is responsible for verifying email addresses.
+type EmailVerifier struct {
+	verifier *emailverifier.Verifier
+}
 
-func verifyEmail(email string) VerificationResult {
-	if email == "" {
-		return VerificationResult{
-			IsValid:   false,
-			Message:   "Email cannot be empty",
-			Reachable: "invalid",
-		}
+// NewEmailVerifier returns a new EmailVerifier instance.
+func NewEmailVerifier() *EmailVerifier {
+	return &EmailVerifier{
+		verifier: emailverifier.NewVerifier().EnableSMTPCheck(),
+	}
+}
+
+// VerifyEmail verifies an email address and returns the result.
+func (ev *EmailVerifier) VerifyEmail(email string) (VerificationResult, error) {
+	emailParts := strings.Split(email, "@")
+
+	if len(emailParts) != 2 {
+		return VerificationResult{}, errors.New("invalid email format")
 	}
 
+	username := emailParts[0]
+	domain := emailParts[1]
 
-
-	ret, err := verifier.Verify(email)
+	result, err := ev.verifier.CheckSMTP(domain, username)
 	if err != nil {
-		return VerificationResult{
-			IsValid:   false,
-			Message:   "Verification failed: " + err.Error(),
-			Reachable: "error",
-		}
+		return VerificationResult{}, fmt.Errorf("verification failed: %w", err)
 	}
 
-	message := "Email appears valid"
-	isValid := true
-	reachable := "yes"
-
-	if ret.Disposable {
-		message = "Email is from a disposable service"
-		isValid = false
-		reachable = "disposable"
+	verificationResult := VerificationResult{
+		IsValid:       result.Deliverable,
+		IsDeliverable: result.Deliverable,
+		IsDisabled:    result.Disabled,
+		FullInbox:     result.FullInbox,
+		HostExists:    result.HostExists,
 	}
 
-	return VerificationResult{
-		IsValid:    isValid,
-		Message:    message,
-		Disposable: ret.Disposable,
-		Reachable:  reachable}
+	if verificationResult.IsValid {
+		verificationResult.Message = "Email is deliverable. The email address is valid"
+	} else {
+		verificationResult.Message = "Email is not deliverable. The email address is invalid"
+	}
+
+	return verificationResult, nil
 }

@@ -17,7 +17,13 @@ func handleVerify(w http.ResponseWriter, r *http.Request) {
 	}
 
 	email := r.FormValue("email")
-	result := verifyEmail(email)
+	ev := NewEmailVerifier()
+	result, err := ev.VerifyEmail(email)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	tmpl := template.Must(template.ParseFiles("templates/result.html"))
 	tmpl.Execute(w, result)
