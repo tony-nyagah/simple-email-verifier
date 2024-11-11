@@ -62,3 +62,7 @@ func (ev *EmailVerifier) VerifyEmail(email string) (VerificationResult, error) {
 
 	return verificationResult, nil
 }
+
+func main() {
+	fmt.Println(EmailVerifier{})
+}
